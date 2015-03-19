@@ -3,7 +3,7 @@ No Embed Youtube
 This script will replace embed youtube video with link. Support dynamic
 inserted content.
 
-³o¤äscript·|§â´O¤Jªºyoutube¼v¤ù¥ş³¡´À´«¬°youtube³sµ²ºô§}¡C¤ä´©°ÊºA¸ü¤J¥\¯à¡C
+é€™æ”¯scriptæœƒæŠŠåµŒå…¥çš„youtubeå½±ç‰‡å…¨éƒ¨æ›¿æ›ç‚ºyoutubeé€£çµç¶²å€ã€‚æ”¯æ´å‹•æ…‹è¼‰å…¥åŠŸèƒ½ã€‚
 
 Install
 -------
