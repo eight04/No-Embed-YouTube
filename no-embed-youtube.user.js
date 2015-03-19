@@ -11,28 +11,28 @@
 
 "use strict";
 
-let xpath = "//iframe[contains(@src,'youtube.com/embed/') and not(ancestor::*[@id='YTLT-player'])]|" +
+var xpath = "//iframe[contains(@src,'youtube.com/embed/') and not(ancestor::*[@id='YTLT-player'])]|" +
 	"//iframe[contains(@src,'youtube.com/v/') and not(ancestor::*[@id='YTLT-player'])]|" +
 	"//object[./param[contains(@value,'youtube.com/v/')] and not(ancestor::*[@id='YTLT-player'])]|" +
 	"//embed[contains(@src,'youtube.com/v/') and not(ancestor::object) and not(ancestor::*[@id='YTLT-player'])]";
 	
-let unEmbed = function(node){
-	let result = document.evaluate(
+var unEmbed = function(node){
+	var result = document.evaluate(
 		xpath, node, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 	
-	let element = null;
+	var element = null;
 	var i = 0, j;
 	
 	while(element = result.snapshotItem(i++)){
 	
 		// iframe or embed
-		let url = element.src;
+		var url = element.src;
 		
 		// object
 		if(!url){
 			for(j = 0; j < element.childNodes.length; j++){
-				let pa = element.childNodes[j];
-				if(pa.getAttribute("name") == "movie"){
+				var pa = element.childNodes[j];
+				if(pa.nodeName == "PARAM" && pa.getAttribute("name") == "movie"){
 					url = pa.getAttribute("value");
 					break;
 				}
@@ -43,9 +43,9 @@ let unEmbed = function(node){
 			continue;
 		}
 		
-		let id = url.match(/(embed|v)\/(.+?)(\?|&|$)/)[2];
-		let a = document.createElement("a");
-		let pageUrl = "http://www.youtube.com/watch?v=" + id;
+		var id = url.match(/(embed|v)\/(.+?)(\?|&|$)/)[2];
+		var a = document.createElement("a");
+		var pageUrl = "http://www.youtube.com/watch?v=" + id;
 		a.appendChild(document.createTextNode(pageUrl));
 		a.setAttribute("href", pageUrl.replace("http:", ""));
 		a.setAttribute("target", "_blank");
