@@ -13,6 +13,10 @@ Test Case
 ---------
 [Test case](https://rawgit.com/eight04/No-Embed-YouTube/master/testcase.html)
 
+Todos
+-----
+* Use generator.
+
 Changelog
 ---------
 * Version 1.3.0 (2015/3/20)
