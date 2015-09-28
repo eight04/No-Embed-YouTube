@@ -6,6 +6,7 @@
 // @exclude		http://www.youtube.com/*
 // @exclude		https://www.youtube.com/*
 // @version     1.3.0
+// @run-at		document-start
 // @grant       none
 // ==/UserScript==
 
@@ -15,19 +16,20 @@ var xpath = "//iframe[contains(@src,'youtube.com/embed/') and not(ancestor::*[@i
 	"//iframe[contains(@src,'youtube.com/v/') and not(ancestor::*[@id='YTLT-player'])]|" +
 	"//object[./param[contains(@value,'youtube.com/v/')] and not(ancestor::*[@id='YTLT-player'])]|" +
 	"//embed[contains(@src,'youtube.com/v/') and not(ancestor::object) and not(ancestor::*[@id='YTLT-player'])]";
-	
+
 var unEmbed = function(node){
+
 	var result = document.evaluate(
 		xpath, node, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-	
+
 	var element = null;
 	var i = 0, j;
-	
+
 	while(element = result.snapshotItem(i++)){
-	
+
 		// iframe or embed
 		var url = element.src;
-		
+
 		// object
 		if(!url){
 			for(j = 0; j < element.childNodes.length; j++){
@@ -38,11 +40,11 @@ var unEmbed = function(node){
 				}
 			}
 		}
-		
+
 		if(!url){
 			continue;
 		}
-		
+
 		var id = url.match(/(embed|v)\/(.+?)(\?|&|$)/)[2];
 		var a = document.createElement("a");
 		var pageUrl = "http://www.youtube.com/watch?v=" + id;
@@ -50,71 +52,16 @@ var unEmbed = function(node){
 		a.setAttribute("href", pageUrl.replace("http:", ""));
 		a.setAttribute("target", "_blank");
 		a.className = "unembed";
-		
+
 		element.parentNode.replaceChild(a, element);
 	}
 };
 
-unEmbed(document.documentElement);
-
-var thread = function(){
-	var data = [],
-		maxLoop = 50,
-		pos = 0,
-		loopCount = 0,
-		started = false;
-		
-	var worker = function(){
-		for (loopCount = 0; pos < data.length && loopCount < maxLoop; pos++, loopCount++) {
-			unEmbed(data[pos]);
-		}
-	};
-	
-	var start = function(){
-		if (started) return;
-		
-		started = true;
-		
-		worker();
-		
-		if (pos < data.length) {
-			loopCount = 0;
-			setTimeout(worker, 16);
-		} else {
-			started = false;
-			data = [];
-			pos = 0;
-		}
-	};
-	
-	var queue = function(node){
-		data.push(node);
-	};
-	
-	return {
-		start: start,
-		queue: queue
-	};
-}();
-
-var observer = function(){
-	// Observer
-	
-	new MutationObserver(function(mutations){
-		var i, j, m;
-		for(i = 0; i < mutations.length; i++){
-			m = mutations[i];
-			if(m.type != "childList"){
-				return;
-			}
-			for(j = 0; j < m.addedNodes.length; j++){
-				thread.queue(m.addedNodes[j]);
-			}
-		}
-		thread.start();
-		
-	}).observe(document.body, {
-		childList: true,
-		subtree: true
-	});
-}();
+new MutationObserver(function(mutations){
+	if (document.body) {
+		unEmbed(document.body);
+	}
+}).observe(document, {
+	childList: true,
+	subtree: true
+});
