@@ -15,7 +15,7 @@ Test Case
 
 Todos
 -----
-* Use generator.
+* Put snapshotIter into thread.
 
 Changelog
 ---------
