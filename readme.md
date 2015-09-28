@@ -19,5 +19,7 @@ Todos
 
 Changelog
 ---------
+* Version 2.0.0 (2015/9/28)
+	- Remove unnecessary thread.
 * Version 1.3.0 (2015/3/20)
 	- Make it compatible with [Youtube Link Title](https://greasyfork.org/zh-TW/scripts/413-youtube-link-title).

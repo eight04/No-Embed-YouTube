@@ -5,7 +5,7 @@
 // @include     http*
 // @exclude		http://www.youtube.com/*
 // @exclude		https://www.youtube.com/*
-// @version     1.3.0
+// @version     2.0.0
 // @run-at		document-start
 // @grant       none
 // ==/UserScript==
