@@ -19,6 +19,9 @@ Todos
 
 Changelog
 ---------
+* Version 2.1.0 (2016/5/14)
+	- Support `youtube-nocookie.com`.
+	- Support additional query.
 * Version 2.0.0 (2015/9/28)
 	- Remove unnecessary thread.
 * Version 1.3.0 (2015/3/20)
