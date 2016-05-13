@@ -12,10 +12,9 @@
 
 "use strict";
 
-var xpath = "//iframe[contains(@src,'youtube.com/embed/') and not(ancestor::*[@id='YTLT-player'])]|" +
-	"//iframe[contains(@src,'youtube.com/v/') and not(ancestor::*[@id='YTLT-player'])]|" +
-	"//object[./param[contains(@value,'youtube.com/v/')] and not(ancestor::*[@id='YTLT-player'])]|" +
-	"//embed[contains(@src,'youtube.com/v/') and not(ancestor::object) and not(ancestor::*[@id='YTLT-player'])]";
+//http://www.cnet.com/news/youtubes-new-nocookie-feature-continues-to-serve-cookies/
+
+var xpath = "//iframe[contains(@src,'youtube.com/embed/') and not(ancestor::*[@id='YTLT-player'])]|//iframe[contains(@src,'youtube.com/v/') and not(ancestor::*[@id='YTLT-player'])]|//object[./param[contains(@value,'youtube.com/v/')] and not(ancestor::*[@id='YTLT-player'])]|//embed[contains(@src,'youtube.com/v/') and not(ancestor::object) and not(ancestor::*[@id='YTLT-player'])]|//iframe[contains(@src,'youtube-nocookie.com/embed/') and not(ancestor::*[@id='YTLT-player'])]|//iframe[contains(@src,'youtube-nocookie.com/v/') and not(ancestor::*[@id='YTLT-player'])]";
 
 var unEmbed = function(node){
 
@@ -45,12 +44,17 @@ var unEmbed = function(node){
 			continue;
 		}
 
+		// https://developers.google.com/youtube/player_parameters#Manual_IFrame_Embeds
 		var id = url.match(/(embed|v)\/(.+?)(\?|&|$)/)[2];
+		var query = url.match(/\?(.+)/);
 		var a = document.createElement("a");
-		var pageUrl = "http://www.youtube.com/watch?v=" + id;
-		a.appendChild(document.createTextNode(pageUrl));
-		a.setAttribute("href", pageUrl.replace("http:", ""));
-		a.setAttribute("target", "_blank");
+		var pageUrl = "//www.youtube.com/watch?v=" + id;
+		a.textContent = "http:" + pageUrl;
+		if (query) {
+			pageUrl += "&" + query[1];
+		}
+		a.href = pageUrl;
+		a.target = "_blank";
 		a.className = "unembed";
 
 		element.parentNode.replaceChild(a, element);
