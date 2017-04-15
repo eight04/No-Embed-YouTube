@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name No Embed Youtube
-// @version 2.1.0
+// @version 2.2.0
 // @description replace embed iframe, object with anchor link.
 // @homepageURL https://github.com/eight04/no-embed-youtube
 // @supportURL https://github.com/eight04/no-embed-youtube/issues
