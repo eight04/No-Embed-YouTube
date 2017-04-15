@@ -14,7 +14,20 @@
 
 //http://www.cnet.com/news/youtubes-new-nocookie-feature-continues-to-serve-cookies/
 
-var xpath = "//iframe[contains(@src,'youtube.com/embed/') and not(ancestor::*[@id='YTLT-player'])]|//iframe[contains(@src,'youtube.com/v/') and not(ancestor::*[@id='YTLT-player'])]|//object[./param[contains(@value,'youtube.com/v/')] and not(ancestor::*[@id='YTLT-player'])]|//embed[contains(@src,'youtube.com/v/') and not(ancestor::object) and not(ancestor::*[@id='YTLT-player'])]|//iframe[contains(@src,'youtube-nocookie.com/embed/') and not(ancestor::*[@id='YTLT-player'])]|//iframe[contains(@src,'youtube-nocookie.com/v/') and not(ancestor::*[@id='YTLT-player'])]";
+var xpath = `(
+	//iframe[
+		contains(@src, 'youtube.com/embed/') or
+		contains(@src, 'youtube.com/v/') or
+		contains(@src, 'youtube-nocookie.com/embed/') or
+		contains(@src, 'youtube-nocookie.com/v/') or
+		contains(@data-src, 'youtube.com/embed/')
+	] |
+	//object[./param[contains(@value, 'youtube.com/v/')]] |
+	//embed[
+		contains(@src, 'youtube.com/v/') and
+		not(ancestor::object)
+	]
+)[not(ancestor::*[@id='YTLT-player'])]`;
 
 var unEmbed = function(node){
 
@@ -27,7 +40,7 @@ var unEmbed = function(node){
 	while(element = result.snapshotItem(i++)){
 
 		// iframe or embed
-		var url = element.src;
+		var url = element.src || element.dataset.src;
 
 		// object
 		if(!url){
