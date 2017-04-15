@@ -1,14 +1,19 @@
 // ==UserScript==
-// @name        No Embed Youtube
-// @description	replace embed iframe, object with anchor link.
-// @namespace   eight04.blogspot.com
-// @include     http*
-// @exclude		http://www.youtube.com/*
-// @exclude		https://www.youtube.com/*
-// @version     2.1.0
-// @run-at		document-start
-// @grant       none
+// @name No Embed Youtube
+// @version 2.1.0
+// @description replace embed iframe, object with anchor link.
+// @homepageURL https://github.com/eight04/no-embed-youtube
+// @supportURL https://github.com/eight04/no-embed-youtube/issues
+// @license MIT
+// @author eight04 <eight04@gmail.com>
+// @namespace eight04.blogspot.com
+// @include http*
+// @exclude http://www.youtube.com/*
+// @exclude https://www.youtube.com/*
+// @run-at document-start
+// @grant none
 // ==/UserScript==
+
 
 "use strict";
 
@@ -37,7 +42,7 @@ var unEmbed = function(node){
 	var element = null;
 	var i = 0, j;
 
-	while(element = result.snapshotItem(i++)){
+	while ((element = result.snapshotItem(i++))) {
 
 		// iframe or embed
 		var url = element.src || element.dataset.src;
@@ -74,7 +79,7 @@ var unEmbed = function(node){
 	}
 };
 
-new MutationObserver(function(mutations){
+new MutationObserver(function(){
 	if (document.body) {
 		unEmbed(document.body);
 	}

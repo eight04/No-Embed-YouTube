@@ -1,0 +1,25 @@
+{
+  "name": "no-embed-youtube",
+  "version": "2.1.0",
+  "description": "This script will replace embed youtube video with link. Support dynamic inserted content.",
+  "keywords": [
+    "userscript"
+  ],
+  "homepage": "https://github.com/eight04/no-embed-youtube",
+  "bugs": "https://github.com/eight04/no-embed-youtube/issues",
+  "license": "MIT",
+  "author": "eight04 <eight04@gmail.com>",
+  "main": "no-embed-youtube.user.js",
+  "repository": "eight04/no-embed-youtube",
+  "scripts": {
+    "test": "eslint *.js",
+    "preversion": "npm test",
+    "version": "sync-version no-embed-youtube.user.js && git add .",
+    "postversion": "git push --follow-tags"
+  },
+  "private": true,
+  "devDependencies": {
+    "eslint": "^3.14.1",
+    "sync-version": "^1.0.0"
+  }
+}
