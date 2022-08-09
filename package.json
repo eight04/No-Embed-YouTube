@@ -1,6 +1,6 @@
 {
   "name": "no-embed-youtube",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "This script will replace embed youtube video with link. Support dynamic inserted content.",
   "keywords": [
     "userscript"
