@@ -10,14 +10,12 @@
 // @include http*
 // @exclude http://www.youtube.com/*
 // @exclude https://www.youtube.com/*
+// @exclude https://vimeo.com/*
 // @run-at document-start
 // @grant none
 // ==/UserScript==
 
-
 "use strict";
-
-//http://www.cnet.com/news/youtubes-new-nocookie-feature-continues-to-serve-cookies/
 
 var xpath = `(
 	//iframe[
@@ -25,7 +23,8 @@ var xpath = `(
 		contains(@src, 'youtube.com/v/') or
 		contains(@src, 'youtube-nocookie.com/embed/') or
 		contains(@src, 'youtube-nocookie.com/v/') or
-		contains(@data-src, 'youtube.com/embed/')
+		contains(@data-src, 'youtube.com/embed/') or
+		contains(@src, 'vimeo.com/video')
 	] |
 	//object[./param[contains(@value, 'youtube.com/v/')]] |
 	//embed[
@@ -33,6 +32,17 @@ var xpath = `(
 		not(ancestor::object)
 	]
 )[not(ancestor::*[@id='YTLT-player'])]`;
+
+const patterns = [
+	{
+    test: /youtube(-nocookie)?\.com\/(embed|v)\/(.+?)(\?|&|$)/,
+    repl: match => `https://www.youtube.com/watch?v=${match[3]}`
+  },
+  {
+    test: /vimeo\.com\/video\/(\d+)/,
+    repl: match => `https://vimeo.com/${match[1]}`
+  }
+];
 
 var unEmbed = function(node){
 
@@ -62,20 +72,18 @@ var unEmbed = function(node){
 			continue;
 		}
 
-		// https://developers.google.com/youtube/player_parameters#Manual_IFrame_Embeds
-		var id = url.match(/(embed|v)\/(.+?)(\?|&|$)/)[2];
-		var query = url.match(/\?(.+)/);
-		var a = document.createElement("a");
-		var pageUrl = "//www.youtube.com/watch?v=" + id;
-		a.textContent = "http:" + pageUrl;
-		if (query) {
-			pageUrl += "&" + query[1];
-		}
-		a.href = pageUrl;
-		a.target = "_blank";
-		a.className = "unembed";
-
-		element.parentNode.replaceChild(a, element);
+    for (const pattern of patterns) {
+      const match = url.match(pattern.test);
+      if (!match) continue;
+      const newUrl = pattern.repl(match);
+      var a = document.createElement("a");
+      a.textContent = newUrl;
+      a.href = newUrl;
+      a.target = "_blank";
+      a.className = "unembed";
+      element.parentNode.replaceChild(a, element);
+      break;
+    }
 	}
 };
 

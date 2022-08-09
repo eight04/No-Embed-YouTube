@@ -12,14 +12,14 @@
   "main": "no-embed-youtube.user.js",
   "repository": "eight04/no-embed-youtube",
   "scripts": {
-    "test": "eslint *.js",
+    "test": "eslint .",
     "preversion": "npm test",
     "version": "sync-version no-embed-youtube.user.js && git add .",
     "postversion": "git push --follow-tags"
   },
   "private": true,
   "devDependencies": {
-    "eslint": "^3.14.1",
-    "sync-version": "^1.0.0"
+    "eslint": "^8.21.0",
+    "sync-version": "^1.0.1"
   }
 }
